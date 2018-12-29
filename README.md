@@ -20,8 +20,31 @@
   </a>
 </p>
 
+![demo](https://i.ibb.co/mTtHTGP/Screenshot-2018-12-30-03-42-26.png)
+
 ### Important
 Bolt is in alpha phase of development which means it's full of bugs. Any production use of this tool discouraged.
+Pull requests and issues are welcome. I also suggest you to put this repo on watch if you are interested in it.
+
+### Current Features
+- Crawling
+- Complete HTTP Support
+- Checks
+  - Entropy
+  - Replay attack
+  - Absence of CSRF protection when requested from a mobile
+  - Removing CSRF token parameter from request
+  - Removing CSRF token from parameter
+  - Requesting resources with a fake token
+  - Potenial race condition
+
+### Features to be added
+- Support CSRF tokens in cookies
+- Referrer and Origin based checks
+- Checks
+  - True entropy of tokens
+  - Checking if server checks the token to a specific length
+ and more...
 
 ### Usage
 
@@ -37,3 +60,6 @@ Other options and switches:
 - `--delay` delay between requests
 - `--timeout` http request timeout
 - `--headers` supply http headers
+
+#### Credits
+Regular Expressions for detecting hashes are taken from [hashID](https://github.com/psypanda/hashID).
