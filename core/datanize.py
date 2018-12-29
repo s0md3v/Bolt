@@ -2,8 +2,6 @@ import random
 import re
 
 from core.config import password, email, token, strings
-from core.requester import requester
-from core.zetanize import zetanize
 
 def datanize(forms, tolerate=False):
     parsedForms = list(forms.values())

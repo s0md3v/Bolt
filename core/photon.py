@@ -1,7 +1,4 @@
 # Let's import what we need
-import tld
-import sys
-import json
 from re import findall
 import concurrent.futures
 from urllib.parse import urlparse # for python3

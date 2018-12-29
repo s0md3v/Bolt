@@ -5,7 +5,6 @@ import random
 import re
 import statistics
 
-from collections import Counter
 from fuzzywuzzy import fuzz, process
 
 import core.config
