@@ -1,11 +1,30 @@
+from core.colors import green, yellow, end, run, good, info, bad, white
+
+def banner():
+    print ('''%s
+    ⚡ %sBOLT%s  ⚡ v0.1.2-alpha
+    %s''' % (yellow, white, yellow, end))
+
+banner()
+
+try:
+    import concurrent.futures
+    try:
+        from fuzzywuzzy import fuzz, process
+    except:
+        import os
+        print ('%s fuzzywuzzy library is not installed, installing now.' % info)
+        os.system('pip3 install fuzzywuzzy')
+        print ('%s fuzzywuzzy has been installed, please restart Bolt.' % info)
+        quit()
+except:
+    print ('%s Bolt is not compatible with python 2. Please run it with python 3.' % bad)
+
 import argparse
-import concurrent.futures
 import json
 import random
 import re
 import statistics
-
-from fuzzywuzzy import fuzz, process
 
 import core.config
 from core.config import token
@@ -18,7 +37,6 @@ from core.ranger import ranger
 from core.zetanize import zetanize
 from core.requester import requester
 from core.utils import extractHeaders, entropy, isProtected
-from core.colors import green, yellow, end, run, good, info, bad, white
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', help='target url', dest='target')
@@ -29,13 +47,7 @@ parser.add_argument('--timeout', help='http request timeout', dest='timeout', ty
 parser.add_argument('--headers', help='http headers', dest='headers', action='store_true')
 args = parser.parse_args()
 
-def banner():
-    print ('''%s
-    ⚡ %sBOLT%s  ⚡
-    %s''' % (yellow, white, yellow, end))
-
 if not args.target:
-    banner()
     print('\n' + parser.format_help().lower())
     quit()
 
@@ -43,8 +55,6 @@ if args.headers:
     headers = extractHeaders(prompt())
 else:
     headers = core.config.headers
-
-banner()
 
 target = args.target
 delay = args.delay or 0
