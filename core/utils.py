@@ -1,13 +1,33 @@
 import re
 from core.config import token
+from math import log
 
-def entropy(string):
+'''def entropy(string):
     digits = re.findall(r'\d', string)
     lowerAlphas = re.findall(r'[a-z]', string)
     upperAlphas = re.findall(r'[A-Z]', string)
     entropy = len(set(digits + lowerAlphas + upperAlphas))
     if not digits:
         entropy = entropy/2
+    return entropy
+'''
+
+def entropy(string):
+    digits = re.findall(r'\d', string)
+    lowerAlphas = re.findall(r'[a-z]', string)
+    upperAlphas = re.findall(r'[A-Z]', string)
+    if digits:
+        if lowerAlphas:
+            if upperAlphas:
+                poss_chars = 62
+            else:
+                poss_chars = 36
+        else:
+            poss_chars = 10           
+    token_length = len(set(digits + lowerAlphas + upperAlphas))
+    
+    entropy = log(poss_chars**token_length,2)
+    
     return entropy
 
 def isProtected(parsed):
