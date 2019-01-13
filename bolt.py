@@ -1,9 +1,11 @@
 from core.colors import green, yellow, end, run, good, info, bad, white
 
+lightning = '\033[93;5m⚡\033[0m'
+
 def banner():
-    print ('''%s
-    ⚡ %sBOLT%s  ⚡ v0.1.2-alpha
-    %s''' % (yellow, white, yellow, end))
+    print ('''
+     %s %sBOLT%s  %s v0.1.3-bolt
+    ''' % (lightning, white, end, lightning))
 
 banner()
 
@@ -27,6 +29,7 @@ import re
 import statistics
 
 import core.config
+from modules.erfc import erfc
 from core.config import token
 from core.datanize import datanize
 from core.prompt import prompt
@@ -36,7 +39,7 @@ from core.evaluate import evaluate
 from core.ranger import ranger
 from core.zetanize import zetanize
 from core.requester import requester
-from core.utils import extractHeaders, entropy, isProtected
+from core.utils import extractHeaders, entropy, isProtected, monobit
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', help='target url', dest='target')
@@ -67,14 +70,16 @@ weakTokens = []
 tokenDatabase = []
 insecureForms = []
 
-print ('%s Phase: Crawling %s[%s1/5%s]%s' % (run, green, end, green, end))
+print (' %s Phase: Crawling %s[%s1/6%s]%s' % (lightning, green, end, green, end))
 dataset = photon(target, headers, level, threadCount)
 allForms = dataset[0]
 print ('\r%s Crawled %i URL(s) and found %i form(s).%-10s' % (info, dataset[1], len(allForms), ' '))
-print ('%s Phase: Evaluating %s[%s2/5%s]%s' % (run, green, end, green, end))
+print (' %s Phase: Evaluating %s[%s2/6%s]%s' % (lightning, green, end, green, end))
 
 evaluate(allForms, weakTokens, tokenDatabase, allTokens, insecureForms)
 
+print (''.join(format(ord(x), 'b') for x in ''.join(allTokens)))
+quit()
 if weakTokens:
     print ('%s Weak token(s) found' % good)
     for weakToken in weakTokens:
@@ -106,7 +111,7 @@ if matches:
     for name in matches:
         print ('    %s>%s %s' % (yellow, end, name))
 
-print ('%s Phase: Comparing %s[%s3/5%s]%s' % (run, green, end, green, end))
+print (' %s Phase: Comparing %s[%s3/6%s]%s' % (lightning, green, end, green, end))
 uniqueTokens = set(allTokens)
 if len(uniqueTokens) < len(allTokens):
     print ('%s Potential Replay Attack condition found' % good)
@@ -145,7 +150,7 @@ except statistics.StatisticsError:
 
 simTokens = []
 
-print ('%s Phase: Observing %s[%s4/5%s]%s' % (run, green, end, green, end))
+print (' %s Phase: Observing %s[%s4/6%s]%s' % (lightning, green, end, green, end))
 print ('%s 100 simultaneous requests are being made, please wait.' % info)
 
 def extractForms(url):
@@ -180,7 +185,7 @@ if simTokens:
 else:
     print ('%s Different tokens were issued for simultaneous requests.' % info)
 
-print ('%s Phase: Testing %s[%s5/5%s]%s' % (good, green, end, green, end))
+print (' %s Phase: Testing %s[%s5/6%s]%s' % (lightning, green, end, green, end))
 
 parsed = ''
 print ('%s Finding a suitable form for further testing. It may take a while.' % run)
@@ -229,6 +234,7 @@ else:
     print ('%s CSRF protection isn\'t enabled for mobile browsers.' % good)
 
 print ('%s Making a request without CSRF token parameter.' % run)
+
 data = tweaker(origData, 'remove')
 response = requester(origUrl, data, headers, origGET, 0)
 if response.status_code == originalCode:
@@ -240,22 +246,10 @@ if response.status_code == originalCode:
             print ('%s It worked!' % good)
 else:
     print ('%s It didn\'t work' % bad)
+
 print ('%s Making a request without CSRF token parameter value.' % run)
 data = tweaker(origData, 'clear')
-response = requester(origUrl, data, headers, origGET, 0)
-if response.status_code == originalCode:
-    if str(originalCode)[0] in ['4', '5']:
-        print ('%s It didn\'t work' % bad)
-    else:
-        difference = abs(originalLength - len(response.text))
-        if difference <= tolerableDifference:
-            print ('%s It worked!' % good)
-else:
-    print ('%s It didn\'t work' % bad)
-seeds = ranger(allTokens)
-print ('%s Generating a fake token.' % run)
-data = tweaker(origData, 'generate', seeds=seeds)
-print ('%s Making a request with the self generated token.' % run)
+
 response = requester(origUrl, data, headers, origGET, 0)
 if response.status_code == originalCode:
     if str(originalCode)[0] in ['4', '5']:
@@ -267,7 +261,27 @@ if response.status_code == originalCode:
 else:
     print ('%s It didn\'t work' % bad)
 
-print ('%s Making requests with various tweaks to the token. It may take a while.' % run)
-# data = datanize(goodCandidate, headers)[1]
-# data = tweaker(data, 'remove')
-# response = requester(origUrl, data, headers, origGET, 0)
+seeds = ranger(allTokens)
+print ('%s Generating a fake token.' % run)
+
+data = tweaker(origData, 'generate', seeds=seeds)
+print ('%s Making a request with the self generated token.' % run)
+
+response = requester(origUrl, data, headers, origGET, 0)
+if response.status_code == originalCode:
+    if str(originalCode)[0] in ['4', '5']:
+        print ('%s It didn\'t work' % bad)
+    else:
+        difference = abs(originalLength - len(response.text))
+        if difference <= tolerableDifference:
+            print ('%s It worked!' % good)
+else:
+    print ('%s It didn\'t work' % bad)
+
+print (' %s Phase: Analysing %s[%s6/6%s]%s' % (lightning, green, end, green, end))
+
+bitDistribution = monobit(''.join(allTokens))
+if bitDistribution < 1:
+    print ('%s The raito of 0\'s and 1\'s is very high which indicates the tokens are pseudo-random' % good)
+else:
+    print ('%s The ')
