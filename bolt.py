@@ -78,8 +78,6 @@ print (' %s Phase: Evaluating %s[%s2/6%s]%s' % (lightning, green, end, green, en
 
 evaluate(allForms, weakTokens, tokenDatabase, allTokens, insecureForms)
 
-print (''.join(format(ord(x), 'b') for x in ''.join(allTokens)))
-quit()
 if weakTokens:
     print ('%s Weak token(s) found' % good)
     for weakToken in weakTokens:
