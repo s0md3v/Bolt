@@ -1,5 +1,18 @@
 import re
+import math
+from modules.erfc import erfc
 from core.config import token
+
+def monobit(string):
+    string = ''.join(format(ord(x), 'b') for x in string)
+    count = 0
+    for char in string:
+        if char == '0':
+            count -= 1
+        else:
+            count += 1
+    value = erfc(math.fabs((count / math.sqrt(len(string)))) / math.sqrt(2))
+    return value
 
 def entropy(string):
     digits = re.findall(r'\d', string)
