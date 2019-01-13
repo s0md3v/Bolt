@@ -26,25 +26,36 @@
 Bolt is in alpha phase of development which means it's full of bugs. Any production use of this tool discouraged.
 Pull requests and issues are welcome. I also suggest you to put this repo on watch if you are interested in it.
 
-### Current Features
-- Crawling
-- Complete HTTP Support
-- Checks
-  - Entropy
-  - Replay attack
-  - Absence of CSRF protection when requested from a mobile
-  - Removing CSRF token parameter from request
-  - Removing CSRF token from parameter
-  - Requesting resources with a fake token
-  - Potenial race condition
+### Workflow
 
-### Features to be added
-- Support CSRF tokens in cookies
-- Referrer and Origin based checks
-- Checks
-  - True entropy of tokens
-  - Checking if server checks the token to a specific length
- and more...
+#### Crawling
+Bolt crawls the target website to the specified depth and stores all the HTML forms found in a database for further processing.
+
+#### Evaluating
+In this phase, these three things are checked:
+- Forms without CSRF protection
+- Weak tokens
+- Comparison of token with various hashes
+
+##### Comparing
+This phase focuses on detection on replay attack scenarios and hence checks if a token has been issued more than one time.
+It also calculates the average [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) between all the tokens to see if they are similar.
+
+##### Observing
+In this phase, 100 simultaneous requests are made to a single webpage to see if same tokens are generated for the requests.
+
+##### Testing
+This phase is dedicated to active testing of the CSRF protection mechanism.
+It performs the followings checks
+- Mobile CSRF protection test
+- Request without CSRF token parameter
+- Request without CSRF token parameter value
+- Request with a self generated token
+
+##### Analysing
+Various statistical checks are performed in this phase to see if the token is really random.
+Following tests are performed during this phase
+- Monobit test
 
 ### Usage
 
