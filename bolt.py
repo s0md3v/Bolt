@@ -4,8 +4,8 @@ lightning = '\033[93;5m⚡\033[0m'
 
 def banner():
     print ('''
-     %s %sBOLT%s  %s v0.1.3-bolt
-    ''' % (lightning, white, end, lightning))
+     %s⚡ %sBOLT%s  ⚡%s v0.1.3-be%s
+    ''' % (yellow, white, yellow, white, end))
 
 banner()
 
@@ -29,7 +29,7 @@ import re
 import statistics
 
 import core.config
-
+from modules.erfc import erfc
 from core.config import token
 from core.datanize import datanize
 from core.prompt import prompt
@@ -94,6 +94,20 @@ if insecureForms:
         if form:
             print ('%s %s %s[%s%s%s]%s' % (bad, url, green, end, form, green, end))
 
+print (' %s Phase: Comparing %s[%s3/6%s]%s' % (lightning, green, end, green, end))
+uniqueTokens = set(allTokens)
+if len(uniqueTokens) < len(allTokens):
+    print ('%s Potential Replay Attack condition found' % good)
+    print ('%s Verifying and looking for the cause' % run)
+    replay = False
+    for url, token in tokenDatabase:
+        for url2, token2 in tokenDatabase:
+            if token == token2 and url != url2:
+                print ('%s The same token was used on %s%s%s and %s%s%s' % (good, green, url, end, green, url2, end))
+                replay = True
+    if not replay:
+        print ('%s Further investigation shows that it was a false positive.')
+
 with open('./db/hashes.json') as f:
     hashPatterns = json.load(f)
 
@@ -108,20 +122,6 @@ if matches:
     print ('%s Token matches the pattern of following hash type(s):' % info)
     for name in matches:
         print ('    %s>%s %s' % (yellow, end, name))
-
-print (' %s Phase: Comparing %s[%s3/6%s]%s' % (lightning, green, end, green, end))
-uniqueTokens = set(allTokens)
-if len(uniqueTokens) < len(allTokens):
-    print ('%s Potential Replay Attack condition found' % good)
-    print ('%s Verifying and looking for the cause' % run)
-    replay = False
-    for url, token in tokenDatabase:
-        for url2, token2 in tokenDatabase:
-            if token == token2 and url != url2:
-                print ('%s The same token was used on %s%s%s and %s%s%s' % (good, green, url, end, green, url2, end))
-                replay = True
-    if not replay:
-        print ('%s Further investigation shows that it was a false positive.')
 
 def fuzzy(tokens):
     averages = []
@@ -259,7 +259,24 @@ if response.status_code == originalCode:
 else:
     print ('%s It didn\'t work' % bad)
 
+
 seeds = ranger(allTokens)
+
+print ('%s Checking if tokens are checked to a specific length' % run)
+
+for index in range(len(allTokens[0])):
+    data = tweaker(origData, 'replace', index=index, seeds=seeds)
+    response = requester(origUrl, data, headers, origGET, 0)
+    if response.status_code == originalCode:
+        if str(originalCode)[0] in ['4', '5']:
+            break
+        else:
+            difference = abs(originalLength - len(response.text))
+            if difference <= tolerableDifference:
+                print ('%s Last %i chars of token aren\'t being checked' % (good, index + 1))
+    else:
+        break
+
 print ('%s Generating a fake token.' % run)
 
 data = tweaker(origData, 'generate', seeds=seeds)
@@ -280,6 +297,4 @@ print (' %s Phase: Analysing %s[%s6/6%s]%s' % (lightning, green, end, green, end
 
 bitDistribution = monobit(''.join(allTokens))
 if bitDistribution < 1:
-    print ('%s The raito of 0\'s and 1\'s is very high which indicates the tokens are pseudo-random' % good)
-else:
-    print ('%s The ')
+    print ('%s The raito of 0s and 1s is very high which indicates the tokens are pseudo-random' % good)
