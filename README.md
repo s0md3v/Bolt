@@ -32,10 +32,7 @@ Pull requests and issues are welcome. I also suggest you to put this repo on wat
 Bolt crawls the target website to the specified depth and stores all the HTML forms found in a database for further processing.
 
 #### Evaluating
-In this phase, these three things are checked:
-- Forms without CSRF protection
-- Weak tokens
-- Comparison of token with various hashes
+In this phase, Bolt finds out the tokens which aren't strong enough and the forms which aren't protected.
 
 ##### Comparing
 This phase focuses on detection on replay attack scenarios and hence checks if a token has been issued more than one time.
@@ -45,12 +42,7 @@ It also calculates the average [levenshtein distance](https://en.wikipedia.org/w
 In this phase, 100 simultaneous requests are made to a single webpage to see if same tokens are generated for the requests.
 
 ##### Testing
-This phase is dedicated to active testing of the CSRF protection mechanism.
-It performs the followings checks
-- Mobile CSRF protection test
-- Request without CSRF token parameter
-- Request without CSRF token parameter value
-- Request with a self generated token
+This phase is dedicated to active testing of the CSRF protection mechanism. It includes but not limited to checking if protection exsists for moblie browsers, submitting requests with self-generated token and testing if token is being checked to a certain length.
 
 ##### Analysing
 Various statistical checks are performed in this phase to see if the token is really random.
