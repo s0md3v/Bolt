@@ -3,6 +3,8 @@ import random
 import re
 
 def tweaker(data, strategy, index=0, seeds=[None, None]):
+	digits = seeds[0]
+	alphabets = seeds[1]
 	newData = {}
 	if strategy == 'clear':
 		for name, value in data.items():
@@ -17,11 +19,11 @@ def tweaker(data, strategy, index=0, seeds=[None, None]):
 	elif strategy == 'break':
 		for name, value in data.items():
 			if re.match(token, value):
-				value = value[:-index]
+				value = value[:index]
+				for i in index:
+					value += random.choice(digits + alphabets)
 			newData[name] = value
 	elif strategy == 'generate':
-		digits = seeds[0]
-		alphabets = seeds[1]
 		for name, value in data.items():
 			if re.match(token, value):
 				newToken = ''
@@ -35,4 +37,8 @@ def tweaker(data, strategy, index=0, seeds=[None, None]):
 				newData[name] = newToken
 			else:
 				newData[name] = value
+	elif strategy == 'replace':
+		for name, value in data.items():
+			if re.match(token, value):
+				value
 	return newData
