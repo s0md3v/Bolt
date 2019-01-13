@@ -29,7 +29,6 @@ import re
 import statistics
 
 import core.config
-from modules.erfc import erfc
 from core.config import token
 from core.datanize import datanize
 from core.prompt import prompt
