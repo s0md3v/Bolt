@@ -1,20 +1,25 @@
 import re
 import math
-from modules.erfc import erfc
 from core.config import token
 
-def monobit(string):
-    string = ''.join(format(ord(x), 'b') for x in string)
-    count = 0
-    for char in string:
-        if char == '0':
-            count -= 1
-        else:
-            count += 1
-    value = erfc(math.fabs((count / math.sqrt(len(string)))) / math.sqrt(2))
-    return value
+def longestCommonSubstring(s1, s2):
+   m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]
+   longest, x_longest = 0, 0
+   for x in range(1, 1 + len(s1)):
+       for y in range(1, 1 + len(s2)):
+           if s1[x - 1] == s2[y - 1]:
+               m[x][y] = m[x - 1][y - 1] + 1
+               if m[x][y] > longest:
+                   longest = m[x][y]
+                   x_longest = x
+           else:
+               m[x][y] = 0
+   return s1[x_longest - longest: x_longest]
 
-def entropy(string):
+def stringToBinary(string):
+    return ''.join(format(ord(x), 'b') for x in string)
+
+def strength(string):
     digits = re.findall(r'\d', string)
     lowerAlphas = re.findall(r'[a-z]', string)
     upperAlphas = re.findall(r'[A-Z]', string)

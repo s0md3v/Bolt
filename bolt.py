@@ -1,10 +1,10 @@
-from core.colors import green, yellow, end, run, good, info, bad, white
+from core.colors import green, yellow, end, run, good, info, bad, white, red
 
 lightning = '\033[93;5m⚡\033[0m'
 
 def banner():
     print ('''
-     %s⚡ %sBOLT%s  ⚡%s v0.1.3-be%s
+     %s⚡ %sBOLT%s  ⚡%s v0.2.1-beta%s
     ''' % (yellow, white, yellow, white, end))
 
 banner()
@@ -29,6 +29,7 @@ import re
 import statistics
 
 import core.config
+from core.entropy import isRandom
 from core.config import token
 from core.datanize import datanize
 from core.prompt import prompt
@@ -38,7 +39,7 @@ from core.evaluate import evaluate
 from core.ranger import ranger
 from core.zetanize import zetanize
 from core.requester import requester
-from core.utils import extractHeaders, entropy, isProtected, monobit
+from core.utils import extractHeaders, strength, isProtected, stringToBinary
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', help='target url', dest='target')
@@ -159,7 +160,7 @@ def extractForms(url):
         for inp in inputs:
             value = inp['value']
             if value and match(r'^[\w\-_]+$', value):
-                if entropy(value) > 10:
+                if strength(value) > 10:
                     simTokens.append(value)
 
 while True:
@@ -294,6 +295,10 @@ else:
 
 print (' %s Phase: Analysing %s[%s6/6%s]%s' % (lightning, green, end, green, end))
 
-bitDistribution = monobit(''.join(allTokens))
-if bitDistribution < 1:
-    print ('%s The raito of 0s and 1s is very high which indicates the tokens are pseudo-random' % good)
+binary = stringToBinary(''.join(allTokens))
+result = isRandom(binary)
+for name, result in result.items():
+    if not result:
+        print ('%s %s : %s%s%s' % (good, name, green, 'non-random', end))
+    else:
+        print ('%s %s : %s%s%s' % (bad, name, red, 'random', end))

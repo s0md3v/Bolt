@@ -1,5 +1,5 @@
 from re import match
-from core.utils import entropy
+from core.utils import strength
 from core.config import commonNames
 
 def evaluate(dataset, weakTokens, tokenDatabase, allTokens, insecureForms):
@@ -16,7 +16,7 @@ def evaluate(dataset, weakTokens, tokenDatabase, allTokens, insecureForms):
                     name = inp['name']
                     value = inp['value']
                     if value and match(r'^[\w\-_]+$', value):
-                        if entropy(value) > 10:
+                        if strength(value) > 10:
                             localTokens.add(value)
                             protected = True
                             break
