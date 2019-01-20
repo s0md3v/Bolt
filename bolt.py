@@ -114,7 +114,7 @@ aToken = allTokens[0]
 matches = []
 for element in hashPatterns:
     pattern = element['regex']
-    if re.match(token, aToken):
+    if re.match(pattern, aToken):
         for name in element['matches']:
             matches.append(name)
 if matches:
