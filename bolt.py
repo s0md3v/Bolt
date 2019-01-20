@@ -164,7 +164,7 @@ def staticParts(allTokens):
 result = {k: v for k, v in staticParts(allTokens).items() if v}
 
 if result:
-    print ('%s Common substring found')
+    print ('%s Common substring found' % info)
     print (json.dumps(result, indent=4))
 
 simTokens = []
