@@ -1,5 +1,4 @@
 import re
-import math
 from core.config import tokenPattern
 
 def longestCommonSubstring(s1, s2):
