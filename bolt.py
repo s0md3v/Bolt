@@ -30,7 +30,6 @@ import statistics
 
 import core.config
 from core.entropy import isRandom
-from core.config import tokenPattern
 from core.datanize import datanize
 from core.prompt import prompt
 from core.photon import photon
