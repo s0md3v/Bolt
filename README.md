@@ -23,7 +23,7 @@
 ![demo](https://i.ibb.co/mTtHTGP/Screenshot-2018-12-30-03-42-26.png)
 
 ### Important
-Bolt is in alpha phase of development which means it's full of bugs. Any production use of this tool discouraged.
+Bolt is in beta phase of development which means there can be bugs. Any production use of this tool discouraged.
 Pull requests and issues are welcome. I also suggest you to put this repo on watch if you are interested in it.
 
 ### Workflow
@@ -47,7 +47,20 @@ This phase is dedicated to active testing of the CSRF protection mechanism. It i
 ##### Analysing
 Various statistical checks are performed in this phase to see if the token is really random.
 Following tests are performed during this phase
-- Monobit test
+- Monobit frequency test
+- Block frequency test
+- Runs test
+- Spectral test
+- Non-overlapping template matching test
+- Overlapping template matching test
+- Serial test
+- Cumultative sums test
+- Aproximate entropy test
+- Random excursions variant test
+- Linear complexity test
+- Longest runs test
+- Maurers universal statistic test
+- Random excursions test
 
 ### Usage
 
