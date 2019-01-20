@@ -1,4 +1,4 @@
-from core.config import token
+from core.config import tokenPattern
 import random
 import re
 
@@ -8,24 +8,24 @@ def tweaker(data, strategy, index=0, seeds=[None, None]):
 	newData = {}
 	if strategy == 'clear':
 		for name, value in data.items():
-			if re.match(token, value):
+			if re.match(tokenPattern, value):
 				value = ''
 			newData[name] = value
 		return newData
 	elif strategy == 'remove':
 		for name, value in data.items():
-			if not re.match(token, value):
+			if not re.match(tokenPattern, value):
 				newData[name] = value
 	elif strategy == 'break':
 		for name, value in data.items():
-			if re.match(token, value):
+			if re.match(tokenPattern, value):
 				value = value[:index]
 				for i in index:
 					value += random.choice(digits + alphabets)
 			newData[name] = value
 	elif strategy == 'generate':
 		for name, value in data.items():
-			if re.match(token, value):
+			if re.match(tokenPattern, value):
 				newToken = ''
 				for char in list(value):
 					if char in digits:
@@ -39,6 +39,6 @@ def tweaker(data, strategy, index=0, seeds=[None, None]):
 				newData[name] = value
 	elif strategy == 'replace':
 		for name, value in data.items():
-			if re.match(token, value):
+			if re.match(tokenPattern, value):
 				value
 	return newData

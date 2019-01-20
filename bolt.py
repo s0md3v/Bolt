@@ -30,7 +30,7 @@ import statistics
 
 import core.config
 from core.entropy import isRandom
-from core.config import token
+from core.config import tokenPattern
 from core.datanize import datanize
 from core.prompt import prompt
 from core.photon import photon
@@ -39,7 +39,7 @@ from core.evaluate import evaluate
 from core.ranger import ranger
 from core.zetanize import zetanize
 from core.requester import requester
-from core.utils import extractHeaders, strength, isProtected, stringToBinary
+from core.utils import extractHeaders, strength, isProtected, stringToBinary, longestCommonSubstring
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-u', help='target url', dest='target')
@@ -115,7 +115,7 @@ aToken = allTokens[0]
 matches = []
 for element in hashPatterns:
     pattern = element['regex']
-    if re.match(pattern, aToken):
+    if re.match(tokenPattern, aToken):
         for name in element['matches']:
             matches.append(name)
 if matches:
@@ -145,6 +145,27 @@ try:
 except statistics.StatisticsError:
     print ('%s No CSRF protection to test' % bad)
     quit()
+
+def staticParts(allTokens):
+    strings = list(set(allTokens.copy()))
+    commonSubstrings = {}
+    for theString in strings:
+        strings.remove(theString)
+        for string in strings:
+            commonSubstring = longestCommonSubstring(theString, string)
+            if commonSubstring not in commonSubstrings:
+                commonSubstrings[commonSubstring] = []
+            if len(commonSubstring) > 2:
+                if theString not in commonSubstrings[commonSubstring]:
+                    commonSubstrings[commonSubstring].append(theString)
+                if string not in commonSubstrings[commonSubstring]:
+                    commonSubstrings[commonSubstring].append(string)
+    return commonSubstrings
+result = {k: v for k, v in staticParts(allTokens).items() if v}
+
+if result:
+    print ('%s Common substring found')
+    print (json.dumps(result, indent=4))
 
 simTokens = []
 

@@ -1,7 +1,7 @@
 import random
 import re
 
-from core.config import password, email, token, strings
+from core.config import password, email, tokenPattern, strings
 
 def datanize(forms, tolerate=False):
     parsedForms = list(forms.values())
@@ -16,7 +16,7 @@ def datanize(forms, tolerate=False):
             name = inp['name']
             kind = inp['type']
             value = inp['value']
-            if re.match(token, value):
+            if re.match(tokenPattern, value):
                 protected = True
             if kind == 'password':
                 data[name] = password

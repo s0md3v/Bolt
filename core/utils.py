@@ -1,5 +1,6 @@
 import re
-from core.config import token
+import math
+from core.config import tokenPattern
 
 def longestCommonSubstring(s1, s2):
    m = [[0] * (1 + len(s2)) for i in range(1 + len(s1))]
@@ -36,7 +37,7 @@ def isProtected(parsed):
             name = inp['name']
             kind = inp['type']
             value = inp['value']
-            if re.match(token, value):
+            if re.match(tokenPattern, value):
                 protected = True
     return protected
 

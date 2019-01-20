@@ -2,7 +2,7 @@ password = 'xXx!69!xXx'
 email = 'testing@gmail.com'
 strings = ['red', 'bob', 'admin', 'alex', 'testing', 'test', 'lol', 'yes', 'dragon', 'bad']
 commonNames = ['csrf', 'auth', 'token', 'verify', 'hash']
-token = r'^[\w\-_+=/]{14,256}$'
+tokenPattern = r'^[\w\-_+=/]{14,256}$'
 
 headers = {  # default headers
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
