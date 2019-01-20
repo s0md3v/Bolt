@@ -36,7 +36,8 @@ In this phase, Bolt finds out the tokens which aren't strong enough and the form
 
 ##### Comparing
 This phase focuses on detection on replay attack scenarios and hence checks if a token has been issued more than one time.
-It also calculates the average [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) between all the tokens to see if they are similar.
+It also calculates the average [levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) between all the tokens to see if they are similar.\
+Tokens are also compared against a database of 250+ hash patterns.
 
 ##### Observing
 In this phase, 100 simultaneous requests are made to a single webpage to see if same tokens are generated for the requests.
@@ -78,4 +79,5 @@ Other options and switches:
 - `--headers` supply http headers
 
 #### Credits
-Regular Expressions for detecting hashes are taken from [hashID](https://github.com/psypanda/hashID).
+Regular Expressions for detecting hashes are taken from [hashID](https://github.com/psypanda/hashID).\
+Bit level entropy tests are taken from [highfestiva](https://github.com/highfestiva)'s python implementation of statistical tests.
