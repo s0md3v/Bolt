@@ -4,8 +4,8 @@ lightning = '\033[93;5m⚡\033[0m'
 
 def banner():
     print ('''
-     %s⚡ %sBOLT%s  ⚡%s v0.2.1-beta%s
-    ''' % (yellow, white, yellow, white, end))
+     %s⚡ %sBOLT%s  ⚡%s
+    ''' % (yellow, white, yellow, end))
 
 banner()
 
@@ -110,6 +110,10 @@ if len(uniqueTokens) < len(allTokens):
 
 with open('./db/hashes.json') as f:
     hashPatterns = json.load(f)
+
+if not allTokens:
+    print ('%s No CSRF protection to test' % bad)
+    quit()
 
 aToken = allTokens[0]
 matches = []
