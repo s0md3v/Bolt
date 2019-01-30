@@ -41,6 +41,7 @@ def isProtected(parsed):
     return protected
 
 def extractHeaders(headers):
+    headers = headers.replace('\\n', '\n')
     sorted_headers = {}
     matches = re.findall(r'(.*):\s(.*)', headers)
     for match in matches:
