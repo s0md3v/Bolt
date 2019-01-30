@@ -28,7 +28,6 @@ import random
 import re
 import statistics
 
-import core.config
 from core.entropy import isRandom
 from core.datanize import datanize
 from core.prompt import prompt
