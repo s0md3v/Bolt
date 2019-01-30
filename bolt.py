@@ -46,17 +46,19 @@ parser.add_argument('-t', help='number of threads', dest='threads', type=int)
 parser.add_argument('-l', help='levels to crawl', dest='level', type=int)
 parser.add_argument('--delay', help='delay between requests', dest='delay', type=int)
 parser.add_argument('--timeout', help='http request timeout', dest='timeout', type=int)
-parser.add_argument('--headers', help='http headers', dest='headers', action='store_true')
+parser.add_argument('--headers', help='http headers', dest='add_headers', nargs='?', const=True)
 args = parser.parse_args()
 
 if not args.target:
     print('\n' + parser.format_help().lower())
     quit()
 
-if args.headers:
+if type(args.add_headers) == bool:
     headers = extractHeaders(prompt())
+elif type(args.add_headers) == str:
+    headers = extractHeaders(args.add_headers)
 else:
-    headers = core.config.headers
+    from core.config import headers
 
 target = args.target
 delay = args.delay or 0
