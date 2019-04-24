@@ -3,6 +3,7 @@ import re
 
 from core.config import password, email, tokenPattern, strings
 
+
 def datanize(forms, tolerate=False):
     parsedForms = list(forms.values())
     for oneForm in parsedForms:

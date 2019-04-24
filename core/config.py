@@ -1,6 +1,7 @@
 password = 'xXx!69!xXx'
 email = 'testing@gmail.com'
-strings = ['red', 'bob', 'admin', 'alex', 'testing', 'test', 'lol', 'yes', 'dragon', 'bad']
+strings = ['red', 'bob', 'admin', 'alex', 'testing',
+           'test', 'lol', 'yes', 'dragon', 'bad']
 commonNames = ['csrf', 'auth', 'token', 'verify', 'hash']
 tokenPattern = r'^[\w\-_+=/]{14,256}$'
 

@@ -2,6 +2,7 @@ from re import match
 from core.utils import strength
 from core.config import commonNames
 
+
 def evaluate(dataset, weakTokens, tokenDatabase, allTokens, insecureForms):
     done = []
     for i in dataset:
@@ -21,10 +22,10 @@ def evaluate(dataset, weakTokens, tokenDatabase, allTokens, insecureForms):
                             protected = True
                             break
                         elif name.lower() in commonNames:
-                            weakTokens.append({url : {name : value}})
+                            weakTokens.append({url: {name: value}})
                 if not protected and action not in done:
                     done.append(done)
-                    insecureForms.append({url : each})
+                    insecureForms.append({url: each})
             for token in localTokens:
                 allTokens.append(token)
-            tokenDatabase.append({url : localTokens})
+            tokenDatabase.append({url: localTokens})
