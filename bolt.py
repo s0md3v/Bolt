@@ -234,14 +234,15 @@ print (' %s Phase: Testing %s[%s5/6%s]%s' %
 
 parsed = ''
 print ('%s Finding a suitable form for further testing. It may take a while.' % run)
-for url, forms in allForms[0].items():
-    found = False
-    parsed = datanize(forms, tolerate=True)
-    if parsed:
-        found = True
-        break
-    if found:
-        break
+for form_dict in allForms:
+    for url, forms in form_dict.items():
+        found = False
+        parsed = datanize(forms, tolerate=True)
+        if parsed:
+            found = True
+            break
+        if found:
+            break
 
 if not parsed:
     candidate = list(random.choice(tokenDatabase).keys())[0]
