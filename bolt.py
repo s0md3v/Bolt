@@ -203,7 +203,7 @@ def extractForms(url):
         inputs = each['inputs']
         for inp in inputs:
             value = inp['value']
-            if value and match(r'^[\w\-_]+$', value):
+            if value and re.match(r'^[\w\-_]+$', value):
                 if strength(value) > 10:
                     simTokens.append(value)
 
