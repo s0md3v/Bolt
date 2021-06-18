@@ -246,7 +246,7 @@ for form_dict in allForms:
 
 if not parsed:
     candidate = list(random.choice(tokenDatabase).keys())[0]
-    parsed = datanize(candidate, headers, tolerate=True)
+    parsed = datanize(candidate, tolerate=True)
     print (parsed)
 
 origGET = parsed[0]
