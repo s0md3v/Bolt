@@ -2,3 +2,4 @@ numpy
 scipy
 requests
 fuzzywuzzy
+python-Levenshtein
