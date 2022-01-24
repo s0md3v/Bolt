@@ -13,16 +13,17 @@ banner()
 
 try:
     import concurrent.futures
-    try:
-        from fuzzywuzzy import fuzz, process
-    except:
-        import os
-        print ('%s fuzzywuzzy library is not installed, installing now.' % info)
-        os.system('pip3 install fuzzywuzzy')
-        print ('%s fuzzywuzzy has been installed, please restart Bolt.' % info)
-        quit()
 except:
     print ('%s Bolt is not compatible with python 2. Please run it with python 3.' % bad)
+
+try:
+    from fuzzywuzzy import fuzz, process
+except:
+    import os
+    print ('%s fuzzywuzzy library is not installed, installing now.' % info)
+    os.system('pip3 install fuzzywuzzy')
+    print ('%s fuzzywuzzy has been installed, please restart Bolt.' % info)
+    quit()
 
 import argparse
 import json
@@ -110,8 +111,10 @@ if len(uniqueTokens) < len(allTokens):
     print ('%s Potential Replay Attack condition found' % good)
     print ('%s Verifying and looking for the cause' % run)
     replay = False
-    for url, token in tokenDatabase:
-        for url2, token2 in tokenDatabase:
+    for each in tokenDatabase:
+        url, token = next(iter(each.keys())), next(iter(each.values()))
+        for each2 in tokenDatabase:
+            url2, token2 = next(iter(each2.keys())), next(iter(each2.values()))
             if token == token2 and url != url2:
                 print ('%s The same token was used on %s%s%s and %s%s%s' %
                        (good, green, url, end, green, url2, end))
@@ -233,21 +236,19 @@ print (' %s Phase: Testing %s[%s5/6%s]%s' %
        (lightning, green, end, green, end))
 
 parsed = ''
+found = False
 print ('%s Finding a suitable form for further testing. It may take a while.' % run)
 for form_dict in allForms:
     for url, forms in form_dict.items():
-        found = False
         parsed = datanize(forms, tolerate=True)
         if parsed:
             found = True
             break
-        if found:
-            break
+    if found:
+        break
 
 if not parsed:
-    candidate = list(random.choice(tokenDatabase).keys())[0]
-    parsed = datanize(candidate, tolerate=True)
-    print (parsed)
+    quit('%s No suitable form found for testing.' % bad)
 
 origGET = parsed[0]
 origUrl = parsed[1]
