@@ -13,6 +13,7 @@ banner()
 
 try:
     import concurrent.futures
+    from pathlib import Path
 except:
     print ('%s Bolt is not compatible with python 2. Please run it with python 3.' % bad)
 
@@ -122,7 +123,8 @@ if len(uniqueTokens) < len(allTokens):
     if not replay:
         print ('%s Further investigation shows that it was a false positive.')
 
-with open('./db/hashes.json') as f:
+p = Path(__file__).parent.joinpath('db/hashes.json')
+with p.open('r') as f:
     hashPatterns = json.load(f)
 
 if not allTokens:
