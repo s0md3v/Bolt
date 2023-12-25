@@ -262,7 +262,7 @@ originalCode = response.status_code
 originalLength = len(response.text)
 print ('%s Status Code: %s' % (info, originalCode))
 print ('%s Content Length: %i' % (info, originalLength))
-print ('%s Checking if the resonse is dynamic.' % run)
+print ('%s Checking if the response is dynamic.' % run)
 response = requester(origUrl, origData, headers, origGET, 0)
 secondLength = len(response.text)
 if originalLength != secondLength:
